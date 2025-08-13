@@ -6,9 +6,9 @@ use num_traits::FromPrimitive;
 use std::pin::Pin;
 
 cpp! {{
-    #include "xla/client/lib/constants.h"
-    #include "xla/client/lib/matrix.h"
-    #include "xla/statusor.h"
+    #include "xla/hlo/builder/lib/constants.h"
+    #include "xla/hlo/builder/lib/matrix.h"
+    #include "xla/tsl/platform/status.h"
     #include "xla/literal_util.h"
     using namespace xla;
 }}

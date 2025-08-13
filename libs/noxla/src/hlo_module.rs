@@ -2,7 +2,7 @@ use crate::{Result, Status, XlaComputation};
 use cpp::{cpp, cpp_class};
 
 cpp! {{
-    #include "xla/service/hlo_parser.h"
+    #include "xla/hlo/parser/hlo_parser.h"
     #include <strstream>
     using namespace xla;
 }}

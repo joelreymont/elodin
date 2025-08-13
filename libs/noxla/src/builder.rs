@@ -7,7 +7,7 @@ use cxx::let_cxx_string;
 use std::pin::Pin;
 
 cpp! {{
-    #include "xla/client/xla_builder.h"
+    #include "xla/hlo/builder/xla_builder.h"
     using namespace xla;
 }}
 

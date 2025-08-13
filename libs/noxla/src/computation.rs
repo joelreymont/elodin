@@ -4,9 +4,9 @@ use crate::{Error, HloModuleProto, Status, XlaOp, XlaOpRaw};
 use cpp::{cpp, cpp_class};
 use cxx::{CxxString, UniquePtr};
 cpp! {{
-    #include "xla/client/xla_builder.h"
-    #include "xla/client/lib/constants.h"
-
+    #include "xla/hlo/builder/xla_builder.h"
+    #include "xla/hlo/builder/lib/constants.h"
+    #include "xla/tsl/platform/status.h"
     #include "mlir/Dialect/Arith/IR/Arith.h"               // from @llvm-project
     #include "mlir/Dialect/Func/IR/FuncOps.h"              // from @llvm-project
     #include "mlir/Dialect/SparseTensor/IR/SparseTensor.h" // from @llvm-project
@@ -19,7 +19,7 @@ cpp! {{
     #include "mlir/Pass/PassManager.h"                     // from @llvm-project
     #include "xla/mlir_hlo/mhlo/IR/hlo_ops.h"
     #include "xla/mlir_hlo/mhlo/transforms/passes.h"
-    #include "xla/translate/hlo_to_mhlo/hlo_to_mlir_hlo.h"
+    #include "xla/hlo/translate/hlo_to_mhlo/hlo_to_mlir_hlo.h"
 
     using namespace xla;
 }}

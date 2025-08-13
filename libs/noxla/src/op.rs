@@ -10,11 +10,11 @@ use std::mem::ManuallyDrop;
 use std::pin::Pin;
 
 cpp! {{
-    #include "xla/client/xla_builder.h"
-    #include "xla/client/lib/constants.h"
-    #include "xla/client/lib/matrix.h"
-    #include "xla/client/lib/math.h"
-    #include "xla/statusor.h"
+    #include "xla/hlo/builder/xla_builder.h"
+    #include "xla/hlo/builder/lib/constants.h"
+    #include "xla/hlo/builder/lib/matrix.h"
+    #include "xla/hlo/builder/lib/math.h"
+    #include "xla/tsl/platform/status.h"
     #include "xla/literal_util.h"
     using namespace xla;
 }}

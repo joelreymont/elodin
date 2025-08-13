@@ -2,7 +2,7 @@ use cpp::{cpp, cpp_class};
 use cxx::{CxxString, UniquePtr};
 
 cpp! {{
-    #include "xla/statusor.h"
+    #include "xla/tsl/platform/status.h"
     using namespace xla;
 }}
 
