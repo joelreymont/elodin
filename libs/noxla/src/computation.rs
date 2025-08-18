@@ -41,7 +41,7 @@ impl XlaComputation {
     pub fn to_hlo_text(&self) -> Result<String, Error> {
         let out_status: Pin<&mut Status> = std::pin::pin!(Status::ok());
         let cxx_string = unsafe {
-            cpp!([self as "const XlaComputation*", out_status as "Status*"] -> UniquePtr<CxxString> as "std::unique_ptr<std::string>" {
+            cpp!([self as "const XlaComputation*", out_status as "tsl::Status*"] -> UniquePtr<CxxString> as "std::unique_ptr<std::string>" {
                     CompileOptions options;
                     mlir::MLIRContext context;
                     mlir::OwningOpRef<mlir::ModuleOp> module =

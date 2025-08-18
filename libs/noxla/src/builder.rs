@@ -27,7 +27,7 @@ impl XlaBuilder {
     pub fn build(&self, op: &XlaOp) -> Result<XlaComputation> {
         let out_status: Pin<&mut Status> = std::pin::pin!(Status::ok());
         let comp = unsafe {
-            cpp!([self as "std::shared_ptr<XlaBuilder>*", op as "XlaOp*", out_status as "Status*"] -> XlaComputation as "XlaComputation" {
+            cpp!([self as "std::shared_ptr<XlaBuilder>*", op as "XlaOp*", out_status as "tsl::Status*"] -> XlaComputation as "XlaComputation" {
                 auto status = (*self)->Build(*op, false);
                 if (status.ok()) {
                     return std::move(status.value());
@@ -131,7 +131,7 @@ impl XlaBuilder {
     pub fn setup_alias(&self, param_num: u64, output_index: u64) -> Result<()> {
         let out_status: Pin<&mut Status> = std::pin::pin!(Status::ok());
         unsafe {
-            cpp!([self as "std::shared_ptr<XlaBuilder>*", param_num as "uint64_t", output_index as "uint64_t", out_status as "Status*"] {
+            cpp!([self as "std::shared_ptr<XlaBuilder>*", param_num as "uint64_t", output_index as "uint64_t", out_status as "tsl::Status*"] {
                 try {
                     (*self)->SetUpAlias({(int64_t) output_index}, (int64_t) param_num, {}, HloInputOutputAliasConfig::AliasKind::kMustAlias);
                 }catch(std::exception& e) {

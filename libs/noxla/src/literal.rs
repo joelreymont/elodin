@@ -63,7 +63,7 @@ impl Literal {
         let dims_ptr = dims.as_ptr();
         let dims_len = dims.len();
         let lit = unsafe {
-            cpp!([self as "std::shared_ptr<Literal>*", dims_ptr as "const int64_t*", dims_len as "size_t", out_status as "Status*"] -> Literal as "std::shared_ptr<Literal>" {
+            cpp!([self as "std::shared_ptr<Literal>*", dims_ptr as "const int64_t*", dims_len as "size_t", out_status as "tsl::Status*"] -> Literal as "std::shared_ptr<Literal>" {
                 auto status = (*self)->Reshape(absl::Span(dims_ptr, dims_len));
                 if (status.ok()) {
                     return std::make_shared<Literal>(std::move(status.value()));

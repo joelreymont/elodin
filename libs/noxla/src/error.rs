@@ -124,7 +124,7 @@ impl Status {
 
     pub fn is_ok(&self) -> bool {
         unsafe {
-            cpp!([self as "const Status*"] -> bool as "bool" {
+            cpp!([self as "const tsl::Status*"] -> bool as "bool" {
                 return self->ok();
             })
         }
@@ -135,7 +135,7 @@ impl Status {
             Ok(())
         } else {
             let msg = unsafe {
-                cpp!([self as "Status*"] -> UniquePtr<CxxString> as "std::unique_ptr<std::string>" {
+                cpp!([self as "tsl::Status*"] -> UniquePtr<CxxString> as "std::unique_ptr<std::string>" {
                     return std::make_unique<std::string>(std::string(self->message()));
                 })
             };

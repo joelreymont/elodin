@@ -510,8 +510,8 @@ impl PjRtClient {
         let out_status: Pin<&mut Status> = std::pin::pin!(Status::ok());
         init_cpu_lapack();
         let client = unsafe {
-            cpp!([out_status as "Status*"] -> PjRtClient as "std::shared_ptr<PjRtClient>" {
-                auto status = xla::GetTfrtCpuClient(false);
+            cpp!([out_status as "tsl::Status*"] -> PjRtClient as "std::shared_ptr<PjRtClient>" {
+                auto status = xla::GetCpuClient(false);
                 if (status.ok()) {
                     return std::shared_ptr(std::move(status.value()));
                 }else{
@@ -537,7 +537,7 @@ impl PjRtClient {
         let out_status: Pin<&mut Status> = std::pin::pin!(Status::ok());
         init_cpu_lapack();
         let client = unsafe {
-            cpp!([out_status as "__attribute__((unused)) Status*", memory_fraction as "__attribute__((unused)) double", preallocate as "__attribute__((unused)) bool"] -> PjRtClient as "std::shared_ptr<PjRtClient>" {
+            cpp!([out_status as "__attribute__((unused)) tsl::Status*", memory_fraction as "__attribute__((unused)) double", preallocate as "__attribute__((unused)) bool"] -> PjRtClient as "std::shared_ptr<PjRtClient>" {
                 #ifdef EL_CUDA
                 auto reg = CustomCallTargetRegistry::Global();
                 xla::ffi::Ffi::RegisterStaticHandler(
@@ -591,7 +591,7 @@ impl PjRtClient {
         let prim_type = T::TY.primitive_type() as i32;
         let out_status: Pin<&mut Status> = std::pin::pin!(Status::ok());
         let buffer = unsafe {
-            cpp!([self as "std::shared_ptr<PjRtClient>*", buf_ptr as "const uint8_t*", out_status as "Status*", dims_ptr as "const int64_t*", dims_len as "size_t", prim_type as "int32_t"] -> PjRtBuffer as "std::unique_ptr<PjRtBuffer>" {
+            cpp!([self as "std::shared_ptr<PjRtClient>*", buf_ptr as "const uint8_t*", out_status as "tsl::Status*", dims_ptr as "const int64_t*", dims_len as "size_t", prim_type as "int32_t"] -> PjRtBuffer as "std::unique_ptr<PjRtBuffer>" {
                 auto client = *self;
                 auto device = client->devices()[0];
                 auto status = client->BufferFromHostBuffer(
@@ -639,7 +639,7 @@ impl PjRtClient {
         let prim_type = ty.primitive_type() as i32;
         let out_status: Pin<&mut Status> = std::pin::pin!(Status::ok());
         let buffer = unsafe {
-            cpp!([self as "std::shared_ptr<PjRtClient>*", buf_ptr as "const uint8_t*", out_status as "Status*", dims_ptr as "const int64_t*", dims_len as "size_t", prim_type as "int32_t"] -> PjRtBuffer as "std::unique_ptr<PjRtBuffer>" {
+            cpp!([self as "std::shared_ptr<PjRtClient>*", buf_ptr as "const uint8_t*", out_status as "tsl::Status*", dims_ptr as "const int64_t*", dims_len as "size_t", prim_type as "int32_t"] -> PjRtBuffer as "std::unique_ptr<PjRtBuffer>" {
                 auto client = *self;
                 auto device = client->devices()[0];
                 auto status = client->BufferFromHostBuffer(
@@ -670,7 +670,7 @@ impl PjRtClient {
     pub fn copy_literal(&self, literal: &Literal) -> Result<PjRtBuffer> {
         let out_status: Pin<&mut Status> = std::pin::pin!(Status::ok());
         let buffer = unsafe {
-            cpp!([self as "std::shared_ptr<PjRtClient>*", literal as "const std::shared_ptr<Literal>*", out_status as "Status*"] -> PjRtBuffer as "std::unique_ptr<PjRtBuffer>" {
+            cpp!([self as "std::shared_ptr<PjRtClient>*", literal as "const std::shared_ptr<Literal>*", out_status as "tsl::Status*"] -> PjRtBuffer as "std::unique_ptr<PjRtBuffer>" {
                 auto client = *self;
                 auto device = client->devices()[0];
                 auto status = client->BufferFromHostLiteral(*literal->get(), device);
@@ -701,7 +701,7 @@ impl PjRtClient {
         let out_status: Pin<&mut Status> = std::pin::pin!(Status::ok());
         let mut options = options.0;
         let exec = unsafe {
-            cpp!([self as "std::shared_ptr<PjRtClient>*", mut options as "CompileOptions", comp as "const XlaComputation*", out_status as "Status*"] -> PjRtLoadedExecutable as "std::shared_ptr<PjRtLoadedExecutable>" {
+            cpp!([self as "std::shared_ptr<PjRtClient>*", mut options as "CompileOptions", comp as "const XlaComputation*", out_status as "tsl::Status*"] -> PjRtLoadedExecutable as "std::shared_ptr<PjRtLoadedExecutable>" {
                 auto client = *self;
                 auto thread_pool = std::make_unique<tsl::thread::ThreadPool>(tsl::Env::Default(), "", tsl::port::MaxParallelism());
                 options.executable_build_options.set_compile_thread_pool(thread_pool.get());
@@ -755,7 +755,7 @@ impl PjRtClient {
         let len = buffer.shape().size();
         let out_status: Pin<&mut Status> = std::pin::pin!(Status::ok());
         let src: &[u8] = unsafe {
-            let src_ptr = cpp!([self as "std::shared_ptr<PjRtClient>*", buffer as "const std::unique_ptr<PjRtBuffer>*", out_status as "Status*"] -> *const u8 as "std::uintptr_t" {
+            let src_ptr = cpp!([self as "std::shared_ptr<PjRtClient>*", buffer as "const std::unique_ptr<PjRtBuffer>*", out_status as "tsl::Status*"] -> *const u8 as "std::uintptr_t" {
                 auto status = (*self)->UnsafeBufferPointer(buffer->get());
                 if (status.ok()) {
                     return status.value();

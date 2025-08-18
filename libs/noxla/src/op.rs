@@ -47,7 +47,7 @@ impl XlaOp {
         let op = &self.raw;
         let out_status: Pin<&mut Status> = std::pin::pin!(Status::ok());
         let comp = unsafe {
-            cpp!([op as "XlaOp*", out_status as "Status*"] -> XlaComputation as "XlaComputation" {
+            cpp!([op as "XlaOp*", out_status as "tsl::Status*"] -> XlaComputation as "XlaComputation" {
                 auto builder = op->builder();
                 auto status = builder->Build(*op, false);
                 if (status.ok()) {

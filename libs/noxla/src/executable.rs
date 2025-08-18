@@ -38,7 +38,7 @@ impl PjRtLoadedExecutable {
         {
             let out_ptr = &mut out;
             unsafe {
-                cpp!([self as "const std::shared_ptr<PjRtLoadedExecutable>*", buffers as "std::unique_ptr<std::vector<PjRtBuffer*>>", out_status as "Status*", out_ptr as "void*", untuple_result as "bool"] {
+                cpp!([self as "const std::shared_ptr<PjRtLoadedExecutable>*", buffers as "std::unique_ptr<std::vector<PjRtBuffer*>>", out_status as "tsl::Status*", out_ptr as "void*", untuple_result as "bool"] {
                     ExecuteOptions options;
                     options.untuple_result = untuple_result;
                     auto status = (*self)->Execute(absl::Span(buffers.get(), 1), options);
